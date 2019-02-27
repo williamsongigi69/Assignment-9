@@ -1,18 +1,5 @@
-CREATE TABLE test
-(
-	word VARCHAR(30) NOT NULL,
-	num INT NOT NULL
-);
-
-INSERT INTO test (word, num) 
-VALUES ('Aye', 22);
-
-SELECT * FROM employees;
-
--- "emp_no","birth_date","first_name","last_name","gender","hire_date"
-
+-- Create Employees Table
 DROP TABLE IF EXISTS employees;
-
 CREATE TABLE employees
 (
 	emp_no INT PRIMARY KEY NOT NULL,
@@ -23,20 +10,16 @@ CREATE TABLE employees
 	hire_date VARCHAR(30) NOT NULL
 );
 
+-- Create Departments Table
 DROP TABLE IF EXISTS departments;
-
 CREATE TABLE departments
 (
 	dept_no VARCHAR(4) PRIMARY KEY NOT NULL,
 	dept_name VARCHAR(30) NOT NULL
 );
 
-SELECT * FROM departments;
-
--- "emp_no","dept_no","from_date","to_date"
-
+-- Create Department Employees Table
 DROP TABLE IF EXISTS dept_emp;
-
 CREATE TABLE dept_emp
 (
 	emp_no INT NOT NULL,
@@ -47,12 +30,8 @@ CREATE TABLE dept_emp
 	to_date VARCHAR(30) NOT NULL
 );
 
-SELECT * FROM dept_emp;
-
--- "dept_no","emp_no","from_date","to_date"
-
+-- Create Department Managers Table
 DROP TABLE IF EXISTS dept_manager;
-
 CREATE TABLE dept_manager
 (
 	dept_no VARCHAR(4) NOT NULL,
@@ -63,12 +42,8 @@ CREATE TABLE dept_manager
 	to_date VARCHAR(30) NOT NULL
 );
 
-SELECT * FROM dept_manager;
-
--- emp_no,salary,from_date,to_date
-
+-- Create Salaries Table
 DROP TABLE IF EXISTS salaries;
-
 CREATE TABLE salaries
 (
 	emp_no INT NOT NULL,
@@ -78,12 +53,8 @@ CREATE TABLE salaries
 	to_date VARCHAR(30) NOT NULL
 );
 
-SELECT * FROM salaries;
-
--- "emp_no","title","from_date","to_date"
-
+-- Create Titles Table
 DROP TABLE IF EXISTS titles;
-
 CREATE TABLE titles
 (
 	emp_no INT NOT NULL,
@@ -93,25 +64,18 @@ CREATE TABLE titles
 	to_date VARCHAR(30) NOT NULL
 );
 
-SELECT * FROM titles;
-
 -- 1. List the following details of each employee: employee number, last name, first name, gender, and salary.
-
 SELECT e.emp_no, e.last_name, e.gender, s.salary
 FROM salaries AS s
 INNER JOIN employees AS e ON
 e.emp_no = s.emp_no;
 
 -- 2. List employees who were hired in 1986.
-
 SELECT emp_no, last_name, first_name, hire_date FROM employees
 WHERE hire_date LIKE '1986%';
 
 -- 3. List the manager of each department with the following information: department number, department name, 
 --    the manager's employee number, last name, first name, and start and end employment dates.
-
-SELECT dept_no, dept_name FROM departments;
-
 SELECT d.dept_no, d.dept_name, m.emp_no, e.last_name, e.first_name, m.from_date AS , m.to_date
 FROM departments AS d
 INNER JOIN dept_manager AS m ON
@@ -119,15 +83,7 @@ m.dept_no = d.dept_no
 JOIN employees AS e ON
 e.emp_no = m.emp_no;
 
-CREATE VIEW Brazil AS
-SELECT emp_no, last_name
-FROM employees
-WHERE emp_no > 10000;
-
-SELECT * FROM brazil;
-
 -- 4. List the department of each employee with the following information: employee number, last name, first name, and department name.
-
 SELECT e.emp_no, e.last_name, e.first_name, dp.dept_name
 FROM employees AS e
 INNER JOIN dept_emp AS d ON
@@ -136,13 +92,11 @@ INNER JOIN departments AS dp ON
 dp.dept_no = d.dept_no;
 
 -- 5. List all employees whose first name is "Hercules" and last names begin with "B."
-
 SELECT * FROM employees
 WHERE first_name LIKE 'Hercules'
 AND last_name LIKE 'B%';
 
 -- 6. List all employees in the Sales department, including their employee number, last name, first name, and department name.
-
 SELECT e.emp_no, e.last_name, e.first_name, dp.dept_name
 FROM employees AS e
 INNER JOIN dept_emp AS d ON
@@ -152,7 +106,6 @@ dp.dept_no = d.dept_no
 WHERE dp.dept_name LIKE 'Sales';
 
 -- 7. List all employees in the Sales and Development departments, including their employee number, last name, first name, and department name.
-
 SELECT e.emp_no, e.last_name, e.first_name, dp.dept_name
 FROM employees AS e
 INNER JOIN dept_emp AS d ON
@@ -163,9 +116,6 @@ WHERE dp.dept_name LIKE 'Development'
 OR dp.dept_name LIKE 'Sales';
 
 -- 8. In descending order, list the frequency count of employee last names, i.e., how many employees share each last name.
-
 SELECT last_name, COUNT(*) AS frequency
-FROM employees
-GROUP BY last_name
+FROM employeesGROUP BY last_name
 ORDER BY frequency DESC;
-
